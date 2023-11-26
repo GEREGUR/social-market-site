@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "types": ["@andylacko/vite-svg-react-loader/svgType"],
+    "files":["custom.d.ts"]
+  },
+  "include": ["vite.config.ts"]
+}
