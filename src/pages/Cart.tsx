@@ -1,4 +1,9 @@
+import React from "react"
+import {Cart_page} from "../components/Cart-page"
+
 export function Cart(){
-    return <h1 className="text-center font-medium font-sans">Shopping Cart</h1>
+    return(
+       <Cart_page></Cart_page>
+    )
 }
 

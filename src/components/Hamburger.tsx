@@ -21,7 +21,7 @@ export function Hamburger(props: HamburgerProps) {
         <button
             onClick={handleClick}
             type="button"
-            className={`w-8 h-8 flex justify-around flex-col flex-wrap z-10 cursor-pointer float-right mr-4`}
+            className={`w-8 h-8 flex justify-around flex-col flex-wrap z-10 cursor-pointer float-right mr-10`}
         >
             <div
                 className={`bg-black block w-8 h-[0.20rem] transition-all origin-[1px] ${

@@ -1,55 +1,85 @@
-import React from "react";
-import { Button, IconButton } from "@material-tailwind/react";
-import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
- 
-export function DefaultPagination() {
-  const [active, setActive] = React.useState(1);
- 
-  const getItemProps = (index:number) =>
-    ({
-      variant: active === index ? "filled" : "text",
-      color: "gray",
-      onClick: () => setActive(index),
-    } as any);
- 
-  const next = () => {
-    if (active === 5) return;
- 
-    setActive(active + 1);
-  };
- 
-  const prev = () => {
-    if (active === 1) return;
- 
-    setActive(active - 1);
-  };
- 
-  return (
-    <div className="flex items-center gap-4">
-      <Button
-        variant="text"
-        className="flex items-center gap-2"
-        onClick={prev}
-        disabled={active === 1}
-      >
-        <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
-      </Button>
-      <div className="flex items-center gap-2">
-        <IconButton {...getItemProps(1)}>1</IconButton>
-        <IconButton {...getItemProps(2)}>2</IconButton>
-        <IconButton {...getItemProps(3)}>3</IconButton>
-        <IconButton {...getItemProps(4)}>4</IconButton>
-        <IconButton {...getItemProps(5)}>5</IconButton>
-      </div>
-      <Button
-        variant="text"
-        className="flex items-center gap-2"
-        onClick={next}
-        disabled={active === 5}
-      >
-        Next
-        <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
-      </Button>
-    </div>
-  );
+interface PaginationProps {
+  totalItems: number;
+  itemsPerPage: number;
+  currentPage: number;
+  onPageChange: (page: number) => void;
 }
+
+const Pagination: React.FC<PaginationProps> = ({ totalItems, itemsPerPage, currentPage, onPageChange }) => {
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  // Helper function to generate an array of page numbers
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
+      pageNumbers.push(i);
+    }
+    return pageNumbers;
+  };
+
+  return (
+    <nav className="flex justify-center my-4">
+      <ul className="pagination flex flex-row">
+        {/* First page button */}
+        <li className="mr-1">
+          <button
+            className="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-10"
+            onClick={() => onPageChange(1)}
+            disabled={currentPage === 1}
+          >
+            First
+          </button>
+        </li>
+
+        {/* Previous page button */}
+        <li className="mr-1">
+          <button
+            className="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+            onClick={() => onPageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Prev
+          </button>
+        </li>
+
+        {/* Display a range of visible page numbers */}
+        {getPageNumbers().map((page) => (
+          <li key={page} className="mr-1">
+            <button
+              className={`${
+                page === currentPage ? 'bg-black text-white' : 'bg-white text-blue-500 hover:bg-gray-200'
+              } font-bold py-2 px-4 rounded`}
+              onClick={() => onPageChange(page)}
+            >
+              {page}
+            </button>
+          </li>
+        ))}
+
+        {/* Next page button */}
+        <li className="mr-1">
+          <button
+            className="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+            onClick={() => onPageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </li>
+
+        {/* Last page button */}
+        <li>
+          <button
+            className="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ml-10"
+            onClick={() => onPageChange(totalPages)}
+            disabled={currentPage === totalPages}
+          >
+            Last
+          </button>
+        </li>
+      </ul>
+    </nav>
+  );
+};
+
+export default Pagination;
